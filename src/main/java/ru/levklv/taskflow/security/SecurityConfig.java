@@ -27,13 +27,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/tasks").authenticated()
+                        .requestMatchers("/tasks/**").authenticated()
                         .anyRequest().permitAll())
-                .formLogin(Customizer.withDefaults())
-                .logout(Customizer.withDefaults());
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .usernameParameter("email") // имя поля для логина
+                        .passwordParameter("password")
+                        .loginProcessingUrl("/process_login")
+                        .defaultSuccessUrl("/tasks", true)
+                        .failureUrl("/auth/login?error")
+                        .permitAll() // вот это важно!
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/auth/login?logout")
+                        .permitAll());
 
         return http.build();
     }
