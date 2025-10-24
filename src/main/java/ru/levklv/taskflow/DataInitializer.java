@@ -29,8 +29,14 @@ public class DataInitializer implements CommandLineRunner {
         User user = new User();
         user.setEmail("test@mail.com");
         user.setPassword(passwordEncoder.encode("123"));
-        user.setRole("USER");
+        user.setRole("ROLE_USER");
         userRepository.save(user);
+
+        User user2 = new User();
+        user2.setEmail("lev@yandex.ru");
+        user2.setPassword(passwordEncoder.encode("123"));
+        user2.setRole("ROLE_ADMIN");
+        userRepository.save(user2);
 
         Task task1 = new Task();
         task1.setTitle("First Task");

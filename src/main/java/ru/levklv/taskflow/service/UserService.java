@@ -48,4 +48,17 @@ public class UserService {
     public boolean checkPasswords(User user, String password) {
         return user.getPassword().equals(password);
     }
+
+    public void deleteById(Integer id) {
+        userRepository.deleteById(id);
+    }
+
+    public void updateUserRole(Integer id, String role) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setRole(role);
+            userRepository.save(user);
+        }
+    }
 }

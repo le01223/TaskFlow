@@ -47,7 +47,7 @@ public class AuthController {
         }
 
         try {
-            user.setRole("USER");
+            user.setRole("ROLE_USER");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             User savedUser = userService.createUser(user);
@@ -56,11 +56,11 @@ public class AuthController {
                 return "redirect:/auth/login?success";
             } else {
                 model.addAttribute("error", "Ошибка при регистрации");
-                return "registration";
+                return "auth/registration";
             }
         } catch (Exception e) {
             model.addAttribute("error", "Ошибка при регистрации: " + e.getMessage());
-            return "registration";
+            return "auth/registration";
         }
     }
 }
