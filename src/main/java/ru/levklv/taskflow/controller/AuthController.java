@@ -41,7 +41,6 @@ public class AuthController {
         }
 
         try {
-            // Устанавливаем роль по умолчанию и шифруем пароль
             user.setRole("USER");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 

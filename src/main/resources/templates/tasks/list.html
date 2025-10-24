@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои задачи</title>
+</head>
+<body>
+<h2>Мои задачи</h2>
+
+<table border="1">
+    <tr>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Статус</th>
+        <th>Приоритет</th>
+    </tr>
+    <tr th:each="task : ${tasks}">
+        <td><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"> </a></td>
+        <td th:text="${task.description}"></td>
+        <td th:text="${task.taskStatus}"></td>
+        <td th:text="${task.taskPriority}"></td>
+        <td>
+            <a th:href="@{/tasks/{id}/edit(id=${task.id})}">Редактировать</a>
+            <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post" style="display:inline">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<a href="/tasks/new">+ Создать новую задачу</a>
+<form th:action="@{/logout}" method="post" style="display:inline">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit">Выйти</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать задачу</title>
+</head>
+<body>
+<h2>Редактировать задачу</h2>
+<form th:action="@{/tasks/{id}/edit(id=${task.id})}" th:object="${task}" method="post">
+    <label>Название:</label>
+    <input type="text" th:field="*{title}" required/><br/>
+
+    <label>Описание:</label>
+    <textarea th:field="*{description}" required></textarea><br/>
+
+    <label>Статус:</label>
+    <select th:field="*{taskStatus}">
+        <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+    </select><br/>
+
+    <label>Приоритет:</label>
+    <select th:field="*{taskPriority}">
+        <option th:each="priority : ${priorities}" th:value="${priority}" th:text="${priority}"></option>
+    </select><br/>
+
+    <label>Дедлайн:</label>
+    <input type="date" th:field="*{deadline}" /><br/>
+
+    <button type="submit">Сохранить</button>
+</form>
+<a href="/tasks">Назад к списку</a>
+</body>
+</html>

@@ -3,6 +3,7 @@ package ru.levklv.taskflow.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,7 +31,7 @@ public class Task {
     private TaskPriority taskPriority;
 
     @Column
-    private LocalDateTime deadline;
+    private LocalDate deadline;
 
     @Column(name = "created_at")
     private LocalDateTime createAt;
