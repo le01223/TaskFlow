@@ -13,10 +13,11 @@ import ru.levklv.taskflow.service.CustomUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailsService;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
-        this.customUserDetailsService = customUserDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -28,21 +29,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/tasks/**").authenticated()
-                        .anyRequest().permitAll())
+                        .requestMatchers("/auth/**", "/css/**", "/js/**").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/auth/login")
-                        .usernameParameter("email") // имя поля для логина
-                        .passwordParameter("password")
                         .loginProcessingUrl("/process_login")
                         .defaultSuccessUrl("/tasks", true)
                         .failureUrl("/auth/login?error")
-                        .permitAll() // вот это важно!
+                        .permitAll()
                 )
                 .logout(logout -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/auth/login?logout")
-                        .permitAll());
+                        .permitAll()
+                );
 
         return http.build();
     }

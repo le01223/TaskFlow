@@ -29,16 +29,15 @@ public class AuthController {
 
     @GetMapping("/registration")
     public String registrationPage(Model model) {
-        model.addAttribute("person", new User());
-        return "registration";
+        model.addAttribute("user", new User());
+        return "auth/registration";
     }
 
     @PostMapping("/registration")
     public String registerUser(@ModelAttribute User user, Model model) {
-        // Проверяем, существует ли пользователь с таким email
         if (userService.findByEmail(user.getEmail()) != null) {
             model.addAttribute("error", "Пользователь с таким email уже существует");
-            return "registration";
+            return "auth/registration";
         }
 
         try {

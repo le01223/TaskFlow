@@ -6,12 +6,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.levklv.taskflow.entity.User;
 import ru.levklv.taskflow.repository.UserRepository;
-import ru.levklv.taskflow.security.CustomUserDetails;
-
-import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     public CustomUserDetailsService(UserRepository userRepository) {
@@ -20,11 +18,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmail(email);
-
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return new CustomUserDetails(user.get());
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .roles(user.getRole())
+                .build();
     }
 }
