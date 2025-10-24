@@ -9,11 +9,17 @@
 <h2>Регистрация</h2>
 
 <form th:action="@{/auth/registration}" method="post" th:object="${user}">
-    <label for="email">Email:</label>
-    <input type="text" th:field="*{email}" id="email"/><br/>
+    <div>
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" placeholder="Введите email"/>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </div>
 
-    <label for="password">Пароль:</label>
-    <input type="password" th:field="*{password}" id="password"/><br/>
+    <div>
+        <label>Пароль:</label>
+        <input type="password" th:field="*{password}" placeholder="Введите пароль"/>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    </div>
 
     <input type="submit" value="Зарегистрироваться"/>
 </form>

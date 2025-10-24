@@ -1,7 +1,9 @@
 package ru.levklv.taskflow.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +36,11 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute User user, Model model) {
+    public String registerUser(@Valid @ModelAttribute User user,
+                               BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "auth/registration";
+        }
         if (userService.findByEmail(user.getEmail()) != null) {
             model.addAttribute("error", "Пользователь с таким email уже существует");
             return "auth/registration";
